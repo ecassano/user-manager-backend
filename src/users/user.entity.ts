@@ -8,6 +8,15 @@ export class User {
   @Column({ unique: true })
   username: string;
 
+  @Column({ unique: true })
+  name: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ default: false })
+  isAdmin: boolean;
+
   @Column()
   password: string;
 }

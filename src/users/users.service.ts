@@ -21,13 +21,28 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    const { username, password } = createUserDto;
+    const { username, password, name, email } = createUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (username === 'admin') {
+      const user = this.usersRepository.create({
+        username,
+        password: hashedPassword,
+        name,
+        email,
+        isAdmin: true,
+      });
+
+      return this.usersRepository.save(user);
+    }
 
     const user = this.usersRepository.create({
       username,
       password: hashedPassword,
+      name,
+      email,
+      isAdmin: false,
     });
 
     return this.usersRepository.save(user);

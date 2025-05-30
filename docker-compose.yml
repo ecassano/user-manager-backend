@@ -1,0 +1,23 @@
+services:
+  adminer:
+    image: adminer:latest
+    ports:
+      - '8080:8080'
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    command:
+      [
+        'postgres',
+        '-c',
+        'shared_preload_libraries=pg_stat_statements,uuid-ossp',
+      ]
+volumes:
+  pgdata:

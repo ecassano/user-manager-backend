@@ -1,4 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 @Entity('users')
 export class User {
@@ -14,9 +25,15 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ default: false })
-  isAdmin: boolean;
+  @Column({ default: UserRole.USER })
+  role: UserRole;
 
   @Column()
   password: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { User, UserRole } from './user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -16,22 +16,22 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findByUsername(username: string) {
-    return this.usersRepository.findOne({ where: { username } });
+  async findByEmail(email: string) {
+    return this.usersRepository.findOne({ where: { email } });
   }
 
   async create(createUserDto: CreateUserDto) {
-    const { username, password, name, email } = createUserDto;
+    const { password, name, email, username } = createUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (username === 'admin') {
+    if (email.endsWith('@conectar')) {
       const user = this.usersRepository.create({
-        username,
+        username: createUserDto.username,
         password: hashedPassword,
         name,
         email,
-        isAdmin: true,
+        role: UserRole.ADMIN,
       });
 
       return this.usersRepository.save(user);
@@ -42,7 +42,7 @@ export class UsersService {
       password: hashedPassword,
       name,
       email,
-      isAdmin: false,
+      role: UserRole.USER,
     });
 
     return this.usersRepository.save(user);

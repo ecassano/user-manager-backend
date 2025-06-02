@@ -54,24 +54,28 @@ pnpm install
 
 ---
 
-## 🗃️ Migrations
+## 🐳 Docker
 
-### Gerar nova migration
+### 📥 Instalação
+
+Caso ainda não tenha o Docker instalado, baixe através do site oficial:
+
+👉 [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/)
+
+---
+
+### ▶️ Subir containers
+
+Com o Docker instalado e rodando, utilize o seguinte comando para iniciar os serviços:
 
 ```bash
-pnpm run migration:generate src/migrations/NomeDaMigration -d data-source.ts
+docker-compose up -d
 ```
 
 ### Rodar migrations
 
 ```bash
 pnpm run migration:run
-```
-
-### Reverter última migration
-
-```bash
-pnpm run migration:revert
 ```
 
 > As migrations serão geradas automaticamente na pasta `src/migrations`.

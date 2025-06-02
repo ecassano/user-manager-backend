@@ -59,8 +59,6 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: CreateUserDto) {
-    console.log('UPDATE USER DTO', updateUserDto);
-    console.log('ID', id);
     const user = await this.usersRepository.findOne({ where: { id } });
 
     if (!user) {
@@ -74,5 +72,15 @@ export class UsersService {
     user.password = password;
     user.updatedAt = new Date();
     return this.usersRepository.save(user);
+  }
+
+  async delete(id: string) {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.usersRepository.delete(id);
   }
 }

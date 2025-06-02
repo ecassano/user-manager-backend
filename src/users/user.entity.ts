@@ -11,6 +11,11 @@ export enum UserRole {
   USER = 'user',
 }
 
+export enum UserStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -27,6 +32,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ default: UserStatus.ACTIVE })
+  status: UserStatus;
 
   @CreateDateColumn()
   createdAt: Date;

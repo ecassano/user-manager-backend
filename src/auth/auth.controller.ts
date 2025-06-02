@@ -32,7 +32,9 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res() res: Response) {
+    console.log('LOGIN DTO', loginDto);
     const { access_token } = await this.authService.login(loginDto);
+    console.log('ACCESS TOKEN', access_token);
 
     res.cookie('access_token', access_token, {
       httpOnly: true,

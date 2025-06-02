@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
+import { UserStatus } from 'src/users/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,9 +15,10 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     const user = await this.usersService.create({
-      email: registerDto.email,
       name: registerDto.name,
+      email: registerDto.email,
       password: registerDto.password,
+      status: UserStatus.ACTIVE,
     });
 
     return user;

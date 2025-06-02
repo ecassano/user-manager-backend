@@ -1,5 +1,10 @@
-import { User } from '../../users/user.entity';
+import { UserRole } from '../../users/user.entity';
 
 export interface RequestWithUser extends Request {
-  user: User;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: UserRole;
+  };
 }

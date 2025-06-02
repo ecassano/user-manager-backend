@@ -5,5 +5,4 @@ export interface JwtPayload {
   email: string;
   role: UserRole;
   name: string;
-  username: string;
 }

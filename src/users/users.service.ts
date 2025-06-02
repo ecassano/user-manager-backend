@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from './user.entity';
 import { Repository } from 'typeorm';
@@ -16,35 +16,63 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
+  async findOne(id: string) {
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
   async findByEmail(email: string) {
     return this.usersRepository.findOne({ where: { email } });
   }
 
   async create(createUserDto: CreateUserDto) {
-    const { password, name, email, username } = createUserDto;
+    const { password, name, email } = createUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    if (email.endsWith('@conectar')) {
+    if (email.endsWith('@conectar.com.br')) {
       const user = this.usersRepository.create({
-        username: createUserDto.username,
         password: hashedPassword,
         name,
         email,
         role: UserRole.ADMIN,
+        createdAt: new Date(),
       });
 
       return this.usersRepository.save(user);
     }
 
     const user = this.usersRepository.create({
-      username,
       password: hashedPassword,
       name,
       email,
       role: UserRole.USER,
+      createdAt: new Date(),
     });
 
+    return this.usersRepository.save(user);
+  }
+
+  async update(id: string, updateUserDto: CreateUserDto) {
+    console.log('UPDATE USER DTO', updateUserDto);
+    console.log('ID', id);
+    const user = await this.usersRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { name, email, password } = updateUserDto;
+
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    user.updatedAt = new Date();
     return this.usersRepository.save(user);
   }
 }

@@ -28,14 +28,20 @@ Este projeto é o backend de um sistema de gerenciamento de usuários. Ele utili
 
 ## ⚙️ Variáveis de Ambiente
 
-Crie um arquivo `.env` na raiz com base no `.env.example`:
+Crie um arquivo `.env` na raiz com base no `.env.example` ou diretamente com o seguinte conteúdo:
 
 ```env
+PORT=3333
+
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
 DB_PASSWORD=postgres
 DB_DATABASE=user_manager
+
+JWT_SECRET=secret
+JWT_EXPIRATION=3600
+
 ```
 
 ---
@@ -78,32 +84,21 @@ pnpm run migration:revert
 pnpm start:dev
 ```
 
-A API estará disponível por padrão em: `http://localhost:3000`
+A API estará disponível por padrão em: `http://localhost:3333`
 
 ---
-
-## 📫 Testar com Insomnia/Postman
 
 ### Criar usuário
 
-**POST** `/users`
+### 👥 Níveis de Acesso
 
-```json
-{
-  "username": "admin",
-  "password": "admin123"
-}
-```
+Ao criar um novo usuário, a aplicação atribui permissões automaticamente com base no domínio do e-mail:
 
-### Buscar todos os usuários
+- E-mails terminando com @conectar.com.br → Administrador
 
-**GET** `/users`
-
----
+- Todos os outros e-mails → Usuário padrão
 
 ## ✅ To-do
-
-* [ ] Implementar autenticação JWT
 * [ ] Criar testes automatizados
 * [ ] Documentação Swagger
 
